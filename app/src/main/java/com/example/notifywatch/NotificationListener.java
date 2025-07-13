@@ -18,6 +18,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class NotificationListener extends NotificationListenerService {
     private String keyWord = "shift";
@@ -97,10 +99,22 @@ public class NotificationListener extends NotificationListenerService {
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
+        //Text Processing
+        StringBuilder stringBuilder = new StringBuilder();
+        LinkedHashSet<String> message = new LinkedHashSet<String>();
+        if (mainText != null && !mainText.isEmpty()) message.add(mainText);
+        if (subText != null && !subText.isEmpty()) message.add(subText);
+        if (bigText != null && !bigText.isEmpty()) message.add(bigText);
+
+        for (String text : message) {
+            stringBuilder.append(text).append("\n");
+        }
+        String finalString = stringBuilder.toString().trim();
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.alert) //Icon
                 .setContentTitle(applicationName)
-                .setContentText(date + "\n" + mainText + "\n" + subText + "\n" + bigText)
+                .setContentText(mainText + "\n" + subText + "\n" + bigText + "\n" + "Posted at: " + date)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that fires when the user taps the notification.
                 //.setContentIntent(pendingIntent)
