@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">NotifyWatch</string>
+    <string name="channel_name">Notifications</string>
+    <string name="channel_description">Important Notifications</string>
+    <string name="dialog_message">Please Enable Notifications in Settings</string>
+    <string name="dialog_title">Important Notifications</string>
+    <string name="dialog_NTLDENIED_TITLE">Please Enable Notification Listening</string>
+    <string name="dialog_NTLDENIED">Go to settings and enable it</string>
+    <string name="ok_button">OK</string>
+
+</resources>
