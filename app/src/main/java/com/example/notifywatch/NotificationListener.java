@@ -48,6 +48,7 @@ public class NotificationListener extends NotificationListenerService {
         super.onNotificationPosted(sbn);
 
         //Package name processing
+        //TODO Keep an eye out for this
         //https://stackoverflow.com/questions/64622288/get-name-of-app-which-created-the-notification
         String appLocation = sbn.getPackageName();
         final PackageManager pm = getApplicationContext().getPackageManager();
@@ -62,7 +63,7 @@ public class NotificationListener extends NotificationListenerService {
 
         //Time processing
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(sbn.getPostTime() * 1000);
+        cal.setTimeInMillis(sbn.getPostTime());
         String date = DateFormat.format("dd-MM-yyyy", cal).toString();
 
         //Get the details
@@ -114,7 +115,7 @@ public class NotificationListener extends NotificationListenerService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.alert) //Icon
                 .setContentTitle(applicationName)
-                .setContentText(mainText + "\n" + subText + "\n" + bigText + "\n" + "Posted at: " + date)
+                .setContentText(finalString + "\n[Posted at: " + date + "]")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that fires when the user taps the notification.
                 //.setContentIntent(pendingIntent)

@@ -68,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         }
 
+        //TODO Add keyword customizability, ringtone customizability
+
+        //TODO Add User Friendly entry (Add a delay with a message before redirecting the user)
+
+        //TODO Work on UI. (Add clear button, scroll, etc)
+
         //Testing Post notifications
         Button button = (Button) findViewById(R.id.supabutton);
         button.setOnClickListener(new View.OnClickListener() {
