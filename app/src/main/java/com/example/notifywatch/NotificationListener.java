@@ -47,6 +47,8 @@ public class NotificationListener extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
 
+        //TODO May need to add extra logic to prevent spamming of notifications
+
         //Package name processing
         //TODO Keep an eye out for this
         //https://stackoverflow.com/questions/64622288/get-name-of-app-which-created-the-notification
@@ -81,8 +83,8 @@ public class NotificationListener extends NotificationListenerService {
         if (bigText == null) bigText = "";
 
         mainText = mainText.toLowerCase();
-        subText = mainText.toLowerCase();
-        bigText = mainText.toLowerCase();
+        subText = subText.toLowerCase();
+        bigText = bigText.toLowerCase();
 
         if (mainText.contains(this.keyWord) || subText.contains(this.keyWord) || bigText.contains(this.keyWord)) {
             //Send Notification Logic Here
