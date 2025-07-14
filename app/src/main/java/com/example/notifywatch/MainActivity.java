@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +27,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
+    EditText inputText;
+    TextView inputWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO Work on UI. (Add clear button, scroll, etc)
 
-        //Testing Post notifications
-        Button button = (Button) findViewById(R.id.supabutton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                postTestNotification();
-            }
-        });
+//        EditText text = (EditText)findViewById(R.id.EditText01);
+//        String str = text.getText().toString();
+
+        inputWord = (TextView) findViewById(R.id.inputWord);
+        inputText = (EditText) findViewById(R.id.inputText);
     }
 
     @Override
@@ -131,5 +133,14 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
             NotificationManagerCompat.from(this).notify(2001, builder.build());
         }
+    }
+
+    //Buttons
+    public void updateKeyword(View v) {
+        inputWord.setText("Your keyword is " + inputText.getText());
+    }
+
+    public void testPost(View v) {
+        postTestNotification();
     }
 }
