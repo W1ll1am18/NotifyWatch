@@ -72,11 +72,15 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         }
 
-        //TODO Add keyword customizability, ringtone customizability
+        //TODO Add keyword customizability, 5. ringtone customizability
 
-        //TODO Add User Friendly entry (Add a delay with a message before redirecting the user)
+        //TODO 2. Add User Friendly entry (Add a delay with a message before redirecting the user)
 
-        //TODO Work on UI. (Add clear button, scroll, etc)
+        //TODO 4. Work on UI. (Add clear button, scroll, etc)
+
+        //TODO 3. Ensure custom notifications are posted in on the app. User proper formatting. Get the app icon Reference Notisave
+
+        //TODO 1. Create a settings menu.
 
 //        EditText text = (EditText)findViewById(R.id.EditText01);
 //        String str = text.getText().toString();

@@ -5,6 +5,8 @@ import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -17,9 +19,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 
 public class NotificationListener extends NotificationListenerService {
     private String keyWord = "shift";
@@ -32,10 +36,13 @@ public class NotificationListener extends NotificationListenerService {
         createNotificationChannel();
 
         StatusBarNotification[] activeNotifications = getActiveNotifications();
-        for (StatusBarNotification sbn : activeNotifications) {
-            onNotificationPosted(sbn);
+        if (activeNotifications != null) {
+            for (StatusBarNotification sbn : activeNotifications) {
+                if (sbn != null && sbn.getNotification() != null) {
+                    onNotificationPosted(sbn);
+                }
+            }
         }
-
     }
 
     @Override
@@ -48,9 +55,9 @@ public class NotificationListener extends NotificationListenerService {
         super.onNotificationPosted(sbn);
 
         //TODO May need to add extra logic to prevent spamming of notifications
+        //TODO Get all previous instances of keyWord from the same messenger app. not the latest one
 
         //Package name processing
-        //TODO Keep an eye out for this
         //https://stackoverflow.com/questions/64622288/get-name-of-app-which-created-the-notification
         String appLocation = sbn.getPackageName();
         final PackageManager pm = getApplicationContext().getPackageManager();
@@ -61,50 +68,68 @@ public class NotificationListener extends NotificationListenerService {
             ai = null;
         }
         final String applicationName = (String) (ai != null ?
-                pm.getApplicationLabel(ai) : "(unknown)");
+                pm.getApplicationLabel(ai) : appLocation);
 
         //Time processing
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(sbn.getPostTime());
         String date = DateFormat.format("dd-MM-yyyy", cal).toString();
 
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String timePosted = time.format(new Date(sbn.getPostTime()));
+
         //Get the details
         Notification notification = sbn.getNotification();
-        Bundle extras = notification.extras;
+
+        if (notification == null) {return;}
+        Bundle extras = notification.extras != null ? notification.extras : new Bundle();
 
         String title = extras.getString(Notification.EXTRA_TITLE);
         String mainText = extras.getString(Notification.EXTRA_TEXT);
         String subText = extras.getString(Notification.EXTRA_SUB_TEXT);
         String bigText = extras.getString(Notification.EXTRA_BIG_TEXT);
 
-        if (title == null) title = "";
-        if (mainText == null) mainText = "";
-        if (subText == null) subText = "";
-        if (bigText == null) bigText = "";
+        title = title != null ? title : "";
+        mainText = mainText != null ? mainText : "";
+        subText = subText != null ? subText : "";
+        bigText = bigText != null ? bigText : "";
 
-        mainText = mainText.toLowerCase();
-        subText = subText.toLowerCase();
-        bigText = bigText.toLowerCase();
+        if (title.isEmpty() && mainText.isEmpty()) {
+            title = "No Title";
+            mainText = "No message content";
+        }
 
-        if (mainText.contains(this.keyWord) || subText.contains(this.keyWord) || bigText.contains(this.keyWord)) {
+        this.keyWord = keyWord.toLowerCase();
+        if (mainText.toLowerCase().contains(this.keyWord) || subText.toLowerCase().contains(this.keyWord) || bigText.toLowerCase().contains(this.keyWord)) {
             //Send Notification Logic Here
             //Also Show notifications in your app. As in create a bubble for it.
             if (!appLocation.equals(getPackageName())) {
-                buildNotification(title, mainText, subText, bigText, applicationName, date);
+                buildNotification(sbn, title, mainText, subText, bigText, applicationName, appLocation, date, timePosted);
             }
         }
 
     }
 
-    public void buildNotification(String title, String mainText, String subText, String bigText, String applicationName, String date) {
+    public void buildNotification(StatusBarNotification sbn, String title, String mainText, String subText, String bigText, String applicationName, String appLocation, String date, String timePosted) {
 
-//        Intent intent = new Intent(this, MainActivity.class); //This changes to another screen for example AlertDetails.
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        //https://stackoverflow.com/questions/3872063/how-to-launch-an-activity-from-another-application-in-android
+        int REQUEST_CODE = Math.abs(appLocation.hashCode()) + Math.abs(sbn.getId());
+        Intent launchApp = getPackageManager().getLaunchIntentForPackage(appLocation);
+        if (launchApp == null) {
+            launchApp = new Intent(this, MainActivity.class);
+        }
+        launchApp.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(),
+                REQUEST_CODE,
+                launchApp,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
 
         //Text Processing
         StringBuilder stringBuilder = new StringBuilder();
-        LinkedHashSet<String> message = new LinkedHashSet<String>();
+        LinkedHashSet<String> message = new LinkedHashSet<>();
         if (mainText != null && !mainText.isEmpty()) message.add(mainText);
         if (subText != null && !subText.isEmpty()) message.add(subText);
         if (bigText != null && !bigText.isEmpty()) message.add(bigText);
@@ -115,18 +140,23 @@ public class NotificationListener extends NotificationListenerService {
         String finalString = stringBuilder.toString().trim();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.alert) //Icon
+                .setSmallIcon(R.drawable.alert) // Icon
                 .setContentTitle(applicationName)
-                .setContentText(finalString + "\n[Posted at: " + date + "]")
+                .setContentText(title + ": " + finalString)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(title + ":\n" + finalString + "\n[Posted at: " + date + " | " + timePosted + "]")) //Expansion
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                // Set the intent that fires when the user taps the notification.
-                //.setContentIntent(pendingIntent)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
         //Check if notifications are still allowed to be posted
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            //Generates unique IDS
+            int notificationId = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
+            //Can manually set if user does not want spam
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify(1001, builder.build());
+            notificationManager.notify(notificationId, builder.build());
+            //TODO Call Dismiss notification Optional HERE. Do this in settings
         }
     }
 
