@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.notifywatch">
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,9 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsAppShiftDetector">
-
         <activity
-            android:name="com.example.notifywatch.MainActivity"
+            android:name=".IntroScreen"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,21 +26,24 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.example.notifywatch.NotificationListener"
+        <service
+            android:name=".NotificationListener"
             android:exported="false"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.service.notification.default_filter_types"
-                android:value="conversations|alerting">
-            </meta-data>
+                android:value="conversations|alerting"></meta-data>
             <meta-data
                 android:name="android.service.notification.disabled_filter_types"
-                android:value="ongoing|silent">
-            </meta-data>
+                android:value="ongoing|silent"></meta-data>
         </service>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
