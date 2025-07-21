@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.WhatsAppShiftDetector" parent="Base.Theme.WhatsAppShiftDetector" />
+
 </resources>

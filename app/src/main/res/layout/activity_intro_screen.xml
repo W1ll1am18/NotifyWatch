@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:fontFamily="@font/lato"
-        android:text="To get started, please enable this application to listen for notifications in settings"
+        android:text="To get started, please enable this application to post and listen for notifications in settings"
         android:textColor="#A1CC5C"
         android:textSize="18dp"
         android:textStyle="bold"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button"
+        android:id="@+id/goToSettings_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="88dp"
@@ -48,6 +48,7 @@
         android:text="Go to settings"
         android:textColor="#2A3140"
         android:textStyle="bold"
+        android:onClick="goToSettings"
         app:backgroundTint="#BDF26D"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

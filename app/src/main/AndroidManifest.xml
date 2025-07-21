@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+<!--    TODO FIX CRASH I SUSPECT IT HAS SOMETHING TO DO WITH THIS-->
     <application
+        android:name=".SettingsMenu"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,10 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsAppShiftDetector">
         <activity
-            android:name=".IntroScreen"
+            android:name=".SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SettingsMenu"
+            android:exported="false" />
+        <activity
+            android:name=".IntroScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
 
         <service
             android:name=".NotificationListener"
@@ -36,11 +44,12 @@
 
             <meta-data
                 android:name="android.service.notification.default_filter_types"
-                android:value="conversations|alerting"></meta-data>
+                android:value="conversations|alerting" />
             <meta-data
                 android:name="android.service.notification.disabled_filter_types"
-                android:value="ongoing|silent"></meta-data>
+                android:value="ongoing|silent" />
         </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
