@@ -32,8 +32,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
-    EditText inputText;
-    TextView inputWord;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
@@ -58,16 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO Add keyword customizability, 5. ringtone customizability
 
-        //TODO 2. Add User Friendly entry (Add a delay with a message before redirecting the user)
-
         //TODO 4. Work on UI. (Add clear button, scroll, etc)
 
         //TODO 3. Ensure custom notifications are posted in on the app. User proper formatting. Get the app icon Reference Notisave
 
-        //TODO 1. Create a settings menu.
-
-        inputWord = findViewById(R.id.inputWord);
-        inputText = findViewById(R.id.inputText);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -181,40 +173,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void postTestNotification() {
-        String CHANNEL_ID = "Notification_Channel";
-
-        // Create channel if needed (only on API 26+)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    getString(R.string.channel_name),
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription(getString(R.string.channel_description));
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.alert)  // Use your icon here
-                .setContentTitle("Test Notification")
-                .setContentText("This is a test notification from MainActivity")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-            NotificationManagerCompat.from(this).notify(2001, builder.build());
-        }
-    }
-
     //Buttons
-    public void updateKeyword(View v) {
-        inputWord.setText("Your keyword is " + inputText.getText());
-    }
-
-    public void testPost(View v) {
-        postTestNotification();
-    }
-
     public void goToSettings(View v) {
         Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
         startActivity(intent);

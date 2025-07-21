@@ -7,9 +7,16 @@
     <string name="toSettings">To Settings</string>
     <string name="allow">allow</string>
     <string name="important_notifications">Important Notifications</string>
-    <string name="your_keyword_is">Your Keyword is</string>
+    <string name="your_keyword_is">Your keyword is</string>
     <string name="click_me">Click Me</string>
     <string name="confirm">Confirm</string>
     <string name="notification_history">Notification History</string>
+    <string name="settings">Settings</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="backtomain">backToMain</string>
+    <string name="test_notification">Test Notification</string>
+    <string name="auto_dismiss">Auto-Dismiss</string>
+    <string name="automatically_dismisses_notifications_that_do_not_have_your_keyword">Automatically dismisses notifications that do not have your keyword</string>
+    <string name="set_your_word_here">Set your word here</string>
 
 </resources>
