@@ -54,7 +54,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:padding="14dp"
-        android:background="@null"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/gear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

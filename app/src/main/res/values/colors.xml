@@ -2,11 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="purple">#9F3CF0</color>
+    <color name="green">#5BDC30</color>
     <color name="primary">#2A3140</color>
     <color name="secondary">#266D99</color>
 
-    <color name="night_mode">#6124B1</color>
     <color name="notifications">#13B2C3</color>
     <color name="More...">#E6A326</color>
+
+    <!--    Light mode colors-->
+    <color name="lightBackground">#F8FAFC</color>
+    <color name="lightBtn">#4a8587</color>
+    <color name="lightBox">#BCCCDC</color>
+    <color name="lightText">#555e69</color>
+
+    <!--    Dark mode colors-->
+    <color name="darkBackground">#222831</color>
+    <color name="darkBtn">#76ABAE</color>
+    <color name="darkBox">#31363F</color>
+    <color name="darkText">#EEEEEE</color>
 
 </resources>

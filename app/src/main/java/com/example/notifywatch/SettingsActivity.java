@@ -6,14 +6,20 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -24,19 +30,23 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-public class SettingsActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class SettingsActivity extends AppCompatActivity {
+    private final ArrayList<TextView> textViews = new ArrayList<>();
+    private final ArrayList<LinearLayout> LL = new ArrayList<>();
+    private ConstraintLayout constraintLayout;
     private View parentView;
-    private SwitchMaterial themeSwitch;
-    private TextView themeTV, titleTV;
+    private TextView textView6;
+    private SwitchMaterial themeSwitch, dismissSwitch;
     private SettingsMenu settings;
+    private AppCompatButton confirmBtn, testNoti;
+    private ImageButton backIcon, uploadIcon;
     EditText inputText;
     TextView inputWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_settings);
@@ -52,15 +62,22 @@ public class SettingsActivity extends AppCompatActivity {
         updateView();
         initialSwitchListener();
 
-        inputWord = findViewById(R.id.inputWord);
+        inputWord = findViewById(R.id.textView1);
         inputText = findViewById(R.id.inputText);
     }
 
     private void initialiseWidgets() {
-        themeTV = findViewById(R.id.themeTV);
-        titleTV = findViewById(R.id.titleTV);
+        updateTextViewArrayList();
+        backIcon = findViewById(R.id.back_button);
+        uploadIcon = findViewById(R.id.upload_mp3);
+        confirmBtn = findViewById(R.id.confirm_button);
+        testNoti = findViewById(R.id.testNoti);
         themeSwitch = findViewById(R.id.themeSwitch);
         parentView = findViewById(R.id.parentView);
+        inputText = findViewById(R.id.inputText);
+        textView6 = findViewById(R.id.textView6);
+        constraintLayout = findViewById(R.id.constraintLayout);
+        dismissSwitch = findViewById(R.id.dismissSwitch);
     }
 
     private void loadSharedPreferences() {
@@ -86,26 +103,106 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void updateView() {
-        final int black = ContextCompat.getColor(this, R.color.black);
-        final int white = ContextCompat.getColor(this, R.color.white);
+        //LightMode
+        final int lightBackground = ContextCompat.getColor(this, R.color.lightBackground);
+        final int lightBtn = ContextCompat.getColor(this, R.color.lightBtn);
+        final int lightBox = ContextCompat.getColor(this, R.color.lightBox);
+        final int lightText = ContextCompat.getColor(this, R.color.lightText);
 
+        //DarkMode
+        final int darkBackground = ContextCompat.getColor(this, R.color.darkBackground);
+        final int darkBtn = ContextCompat.getColor(this, R.color.darkBtn);
+        final int darkBox = ContextCompat.getColor(this, R.color.darkBox);
+        final int darkText = ContextCompat.getColor(this, R.color.darkText);
+
+        int color;
+        int boxColor;
+
+        //Dark Mode
         if(settings.getCustomTheme().equals(SettingsMenu.DARK_THEME)) {
-            titleTV.setTextColor(white);
-            themeTV.setTextColor(white);
-            themeTV.setText("Dark Mode");
-            parentView.setBackgroundColor(black);
+            confirmBtn.setTextColor(darkBtn);
+            GradientDrawable drawable = (GradientDrawable) confirmBtn.getBackground();
+            drawable.setStroke(3, darkBtn);
+
+            testNoti.setTextColor(darkBtn);
+            GradientDrawable drawable1 = (GradientDrawable) testNoti.getBackground();
+            drawable1.setStroke(3, darkBtn);
+
+            GradientDrawable drawable2 = (GradientDrawable) constraintLayout.getBackground();
+            drawable2.setColor(darkBox);
+
+            ColorStateList thumbTint = ColorStateList.valueOf(darkText);
+            ColorStateList trackTint = ColorStateList.valueOf(darkBtn);
+
+            themeSwitch.setThumbTintList(thumbTint);
+            themeSwitch.setTrackTintList(trackTint);
+            dismissSwitch.setThumbTintList(thumbTint);
+            dismissSwitch.setTrackTintList(trackTint);
+
+            textView6.setText("Dark Mode"); //Theme text
+            uploadIcon.setColorFilter(darkText);
+            backIcon.setColorFilter(darkText);
+            parentView.setBackgroundColor(darkBackground);
+            inputText.setHintTextColor(darkText);
             themeSwitch.setChecked(true);
+            color = darkText;
+            boxColor = darkBox;
         }
+        //Light Mode
         else {
-            titleTV.setTextColor(black);
-            themeTV.setTextColor(black);
-            themeTV.setText("Light Mode");
-            parentView.setBackgroundColor(white);
+            confirmBtn.setTextColor(lightBtn);
+            GradientDrawable drawable = (GradientDrawable) confirmBtn.getBackground();
+            drawable.setStroke(3, lightBtn);
+
+            testNoti.setTextColor(lightBtn);
+            GradientDrawable drawable1 = (GradientDrawable) testNoti.getBackground();
+            drawable1.setStroke(3, lightBtn);
+
+            GradientDrawable drawable2 = (GradientDrawable) constraintLayout.getBackground();
+            drawable2.setColor(lightBox);
+
+            ColorStateList thumbTint = ColorStateList.valueOf(lightText);
+            ColorStateList trackTint = ColorStateList.valueOf(lightBtn);
+
+            themeSwitch.setThumbTintList(thumbTint);
+            themeSwitch.setTrackTintList(trackTint);
+            dismissSwitch.setThumbTintList(thumbTint);
+            dismissSwitch.setTrackTintList(trackTint);
+
+            textView6.setText("Light Mode"); //Theme text
+            uploadIcon.setColorFilter(lightText);
+            backIcon.setColorFilter(lightText);
+            parentView.setBackgroundColor(lightBackground);
+            inputText.setHintTextColor(lightText);
             themeSwitch.setChecked(false);
+            color = lightText;
+            boxColor = lightBox;
+        }
+
+        for (TextView tV : textViews) {
+            tV.setTextColor(color);
+        }
+
+        for (LinearLayout lly : LL) {
+            GradientDrawable drawable3 = (GradientDrawable) lly.getBackground();
+            drawable3.setColor(boxColor);
         }
     }
 
-    public void back(View view) {
+    private void updateTextViewArrayList() {
+        this.textViews.add(findViewById(R.id.textView1));
+        this.textViews.add(findViewById(R.id.textView2));
+        this.textViews.add(findViewById(R.id.textView3));
+        this.textViews.add(findViewById(R.id.textView4));
+        this.textViews.add(findViewById(R.id.textView5));
+        this.textViews.add(findViewById(R.id.textView6));
+
+        this.LL.add(findViewById(R.id.linearLayout1));
+        this.LL.add(findViewById(R.id.linearLayout2));
+        this.LL.add(findViewById(R.id.linearLayout3));
+    }
+
+    public void back(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -130,7 +227,7 @@ public class SettingsActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.alert)  // Use your icon here
                 .setContentTitle("Test Notification")
-                .setContentText("This is a test notification from MainActivity")
+                .setContentText("This is a test notification. This means your notifications work!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
 
