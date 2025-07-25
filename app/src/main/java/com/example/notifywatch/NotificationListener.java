@@ -63,7 +63,7 @@ public class NotificationListener extends NotificationListenerService {
         final PackageManager pm = getApplicationContext().getPackageManager();
         ApplicationInfo ai;
         try {
-            ai = pm.getApplicationInfo(appLocation, 0);
+            ai = pm.getApplicationInfo(appLocation, PackageManager.GET_META_DATA);
         } catch (final PackageManager.NameNotFoundException e) {
             ai = null;
         }
