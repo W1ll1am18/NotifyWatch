@@ -1,18 +1,12 @@
 package com.example.notifywatch;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -20,18 +14,15 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.switchmaterial.SwitchMaterial;
-
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
+    DatabaseHelper dbHelper;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
@@ -53,12 +44,24 @@ public class MainActivity extends AppCompatActivity {
             //start activity(screen)
         }
 
+        //Main Class Features ---------
+        //TODO Ensure custom notifications are posted in on the app. User proper formatting. Get the app icon Reference Notisave
+        //TODO Add Clear, Hold drag and delete via bin, Search bar
 
+        //Databse Helper Features -------------
+        //TODO Database Integration SQLlite
+
+        //Settings Class Features -------------
         //TODO Add keyword customizability, 5. ringtone customizability
+        //TODO Make sure Main classes mode matches with Settings mode rn its in darkmode
+        //TODO Integrate Auto-Dismiss and keyWord Search to notification listener
 
-        //TODO 4. Work on UI. (Add clear button, scroll, etc)
-
-        //TODO 3. Ensure custom notifications are posted in on the app. User proper formatting. Get the app icon Reference Notisave
+        //Accessory ------------
+        //TODO insert JUnit Testing.
+        //TODO Transition Animations
+        //TODO Sound Effects
+        //TODO DEBUG for most android phones
+        //TODO Monetize?
 
     }
 

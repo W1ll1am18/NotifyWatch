@@ -6,7 +6,9 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -26,9 +28,19 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 
 public class NotificationListener extends NotificationListenerService {
-    private String keyWord = "shift";
-    //TODO save it after the app closes
+    private String keyWord = "";
     public static final String CHANNEL_ID= "Notification_Channel";
+
+    public void setKeyword() {
+        SharedPreferences sharedPref = getSharedPreferences(SettingsMenu.PREFERENCES, Context.MODE_PRIVATE);
+        String result = sharedPref.getString("Keyword", "");
+        if (result.isEmpty() || result == null) {
+            this.keyWord = "!@#$%^&*()";
+        }
+        else {
+            this.keyWord = result;
+        }
+    }
 
     @Override
     public void onListenerConnected () {
@@ -53,6 +65,7 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
+        setKeyword();
 
         //TODO May need to add extra logic to prevent spamming of notifications
         //TODO Get all previous instances of keyWord from the same messenger app. not the latest one
@@ -63,7 +76,7 @@ public class NotificationListener extends NotificationListenerService {
         final PackageManager pm = getApplicationContext().getPackageManager();
         ApplicationInfo ai;
         try {
-            ai = pm.getApplicationInfo(appLocation, PackageManager.GET_META_DATA);
+            ai = pm.getApplicationInfo(appLocation, 0);
         } catch (final PackageManager.NameNotFoundException e) {
             ai = null;
         }
@@ -158,6 +171,14 @@ public class NotificationListener extends NotificationListenerService {
             notificationManager.notify(notificationId, builder.build());
             //TODO Call Dismiss notification Optional HERE. Do this in settings
         }
+    }
+
+    //TODO PASS info into database helper
+
+    private void createPopup() {
+        //TODO Implement SQL lite database.
+        //Store unique incrementing counter in shared preferences.
+        //Use Local broadcast manager
     }
 
     private void createNotificationChannel() {

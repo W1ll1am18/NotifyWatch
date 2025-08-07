@@ -82,7 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void loadSharedPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences(SettingsMenu.PREFERENCES, MODE_PRIVATE);
-        String theme = sharedPreferences.getString(SettingsMenu.CUSTOM_THEME, SettingsMenu.LIGHT_THEME);
+        String theme = sharedPreferences.getString(SettingsMenu.CUSTOM_THEME, SettingsMenu.DARK_THEME);
         settings.setCustomTheme(theme);
     }
 
@@ -208,6 +208,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void updateKeyword(View v) {
+        SharedPreferences.Editor editor = getSharedPreferences(SettingsMenu.PREFERENCES, MODE_PRIVATE).edit();
+        editor.putString("Keyword", inputText.getText().toString());
+        editor.apply();
         inputWord.setText("Your keyword is " + inputText.getText());
     }
 
