@@ -143,6 +143,7 @@ public class SettingsActivity extends AppCompatActivity {
             uploadIcon.setColorFilter(darkText);
             backIcon.setColorFilter(darkText);
             parentView.setBackgroundColor(darkBackground);
+            inputText.setTextColor(darkText);
             inputText.setHintTextColor(darkText);
             themeSwitch.setChecked(true);
             color = darkText;
@@ -174,6 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
             backIcon.setColorFilter(lightText);
             parentView.setBackgroundColor(lightBackground);
             inputText.setHintTextColor(lightText);
+            inputText.setTextColor(lightText);
             themeSwitch.setChecked(false);
             color = lightText;
             boxColor = lightBox;
